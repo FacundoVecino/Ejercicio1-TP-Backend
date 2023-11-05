@@ -37,3 +37,53 @@ export const postTask = async (req, res) => {
     });
   }
 };
+
+export const putTask = async (req, res) => {
+  const { body, params: { id } } = req;
+  try {
+    const action = await TaskModel.updateOne({ _id: id }, body);
+
+    if (action.matchedCount === 0) {
+      res.status(400).json({
+        data: null,
+        message: 'No se encontró la tarea con ese id',
+      });
+      return;
+    }
+    res.json({
+      data: null,
+      message: 'La tarea ha sido actualizada exitosamente',
+    });
+  } catch (e) {
+    res.status(500).json({
+      data: null,
+      message: 'Ocurrió un error actualizando la tarea',
+      error: e.message,
+    });
+  }
+};
+
+export const deleteTask = async (req, res) => {
+  const { params: { id } } = req;
+  try {
+    const action = await TaskModel.updateOne({ _id: id }, { isActive: false });
+
+    if (action.matchedCount === 0) {
+      res.status(400).json({
+        data: null,
+        message: 'No se encontró la tarea con ese id',
+      });
+      return;
+    }
+    res.json({
+      data: null,
+      message: 'La tarea ha sido eliminada exitosamente',
+    });
+  } catch (e) {
+    res.status(500).json({
+      data: null,
+      message: 'Ocurrió un error eliminando la tarea',
+      error: e.message,
+    });
+  }
+};
